@@ -10,7 +10,7 @@ export default function Home() {
       <p>Manage your tasks efficiently and stay organised.</p>
 
       <Link href='/todo'>
-        <button>Go to To-Do List page</button>
+        <button className='navigation'>Go to To-Do List page</button>
       </Link>
     </main>
 

@@ -12,7 +12,7 @@ export default function TodoPage() {
         <p>This is where your tasks will be listed.</p>
 
         <Link href="/">
-          <button>
+          <button className='navigation'>
             Go Back Home
           </button>
         </Link>

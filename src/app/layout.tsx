@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import "./globals.css";
+import ThemeToggle from "./ThemedToggle";
 
 
 export const metadata: Metadata = {
@@ -15,7 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <body
       >
-        {children}
+        <ThemeToggle />
+          {children}
       </body>
     </html>
   );
