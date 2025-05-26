@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* targets the highest-level element which is the html tag */
 /* these are for the default (light) theme */
 :root {
