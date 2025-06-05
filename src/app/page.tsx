@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AITool from "./AITool";
 
 export default function Home() {
   return (
@@ -14,6 +15,9 @@ export default function Home() {
           Go to To-Do List page
         </button>
       </Link>
+
+      <p className="mt-36">Do you want to try our new AI Tool?</p>
+      <AITool/>
     </main>
 
     <footer className="bg-white text-blue-900 text-center p-4 dark:bg-blue-900 dark:text-white">
