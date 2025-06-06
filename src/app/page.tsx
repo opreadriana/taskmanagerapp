@@ -16,7 +16,8 @@ export default function Home() {
         </button>
       </Link>
 
-      <p className="mt-36">Do you want to try our new AI Tool?</p>
+      <p className="mt-36 text-lg">Do you want to try our new AI Tool?</p>
+      <p className='text-sm'>*Try our new feature and ask the AI about your Tasks from the To-Do List Page.</p>
       <AITool/>
     </main>
 

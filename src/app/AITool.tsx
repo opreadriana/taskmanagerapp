@@ -6,6 +6,17 @@ export default function AITool() {
   const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastPrompt, setLastPrompt] = useState<string | null>(null);
+
+  // Get tasks from localStorage, and using them to construct a prompt
+  function getTasksFromLocalStorage() {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem("tasks") || "[]");
+  } catch {
+    return [];
+  }
+}
 
   async function handleAsk(e: React.FormEvent) {
     e.preventDefault();
@@ -13,14 +24,34 @@ export default function AITool() {
     setError(null);
     setResponse(null);
 
+    //we are checking if the prompt includes the word 'tasks' and if it does, we send their information to OpenAI API
+    let finalPrompt = prompt;
+    if (prompt.toLowerCase().includes("tasks") ||
+    prompt.toLowerCase().includes("task")) {
+      const tasks = getTasksFromLocalStorage();
+      const tasksText = tasks.length
+        ? tasks.map(t => `${t.done ? "[x]" : "[ ]"} ${t.text}`).join(", ")
+        : "No tasks found.";
+      finalPrompt = `${prompt}\nHere are my tasks: ${tasksText}`;
+    }
+
+    // check to avoid sending null/empty trimmed string sending prompt to OpenAI API
+    if (!finalPrompt || typeof finalPrompt !== "string" || !finalPrompt.trim()) {
+        setError("Please enter a prompt.");
+        setLoading(false);
+    return;
+    }
+
     try {
       const res = await fetch("/api/ask-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: finalPrompt }),
       });
       const data = await res.json();
       setResponse(data.choices?.[0]?.message?.content || "No response from AI.");
+      setLastPrompt(finalPrompt);
+      setPrompt('');
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -48,7 +79,14 @@ export default function AITool() {
       {error && <div className="text-red-600 mb-2">{error}</div>}
       {response && (
         <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded">
-          <strong>AI says:</strong> {response}
+          <strong>You:</strong> {lastPrompt}
+          <br /> <br/>
+          <strong>AI:</strong> {response}
+        </div>
+      )}
+      {!response && (
+        <div className="text-xs text-gray-500 mb-2">
+          Powered by ChatGPT (gpt-3.5-turbo)
         </div>
       )}
     </div>
