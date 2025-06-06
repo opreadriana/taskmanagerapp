@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    //read the prompt from the request body
+  //read the prompt from the request body
   const { prompt } = await req.json();
 
-  //call OpenAI API and sends the PROMPT with it
+  //call OpenAI API and send the PROMPT with it
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
