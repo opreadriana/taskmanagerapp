@@ -1,24 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useTasks } from "../context/TasksContext";
 
 export default function TodoPage() {
-  const [tasks, setTasks] = useState([
-    { text: "Sample Task 1", done: false },
-    { text: "Sample Task 2", done: false },
-  ]);
+  const {tasks, setTasks} = useTasks();
   const [input, setInput] = useState("");
-
-  //load tasks state from localStorage on mount, from a JSON string into an array
-  useEffect(() => {
-  const stored = localStorage.getItem("tasks");
-  if (stored) setTasks(JSON.parse(stored));
-  }, []);
-
-  //save tasks to localStorage whenever they change, from an array to a JSON string
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  })
 
   function addTask(e: React.FormEvent) {
     e.preventDefault();

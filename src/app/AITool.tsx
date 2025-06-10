@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useTasks } from "./context/TasksContext";
 
 export default function AITool() {
   const [prompt, setPrompt] = useState("");
@@ -8,15 +9,7 @@ export default function AITool() {
   const [error, setError] = useState<string | null>(null);
   const [lastPrompt, setLastPrompt] = useState<string | null>(null);
 
-  // Get tasks from localStorage, and using them to construct a prompt
-  function getTasksFromLocalStorage() {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(localStorage.getItem("tasks") || "[]");
-  } catch {
-    return [];
-  }
-}
+  const {tasks} = useTasks();
 
   async function handleAsk(e: React.FormEvent) {
     e.preventDefault();
@@ -24,11 +17,10 @@ export default function AITool() {
     setError(null);
     setResponse(null);
 
-    //we are checking if the prompt includes the word 'tasks' and if it does, we send their information to OpenAI API
+    // check if the prompt includes the word 'tasks' and if it does, send tasks' information to endpoint
     let finalPrompt = prompt;
     if (prompt.toLowerCase().includes("tasks") ||
     prompt.toLowerCase().includes("task")) {
-      const tasks = getTasksFromLocalStorage();
       const tasksText = tasks.length
         ? tasks.map(t => `${t.done ? "[x]" : "[ ]"} ${t.text}`).join(", ")
         : "No tasks found.";

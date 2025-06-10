@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ThemeToggle from "./ThemedToggle";
+import { TasksProvider } from "./context/TasksContext";
 
 
 export const metadata: Metadata = {
@@ -17,8 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col"
       >
-        <ThemeToggle />
+        <TasksProvider>
+         <ThemeToggle />
           {children}
+        </TasksProvider>
       </body>
     </html>
   );
