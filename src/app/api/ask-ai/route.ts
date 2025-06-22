@@ -16,8 +16,6 @@ export async function POST(req: NextRequest) {
       messages: [{ role: "user", content: prompt }],
     }),
   });
-
-  console.log(process.env.OPENAI_API_KEY);
   const data = await response.json();
   return NextResponse.json(data);
 }
