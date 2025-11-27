@@ -1,7 +1,15 @@
+"use client";
 import Link from "next/link";
 import AITool from "./AITool";
+import { testSupabaseConnection } from '../../supabaseClient';
+import { useEffect } from "react";
 
 export default function Home() {
+  //test Supabase connection on component mount
+  useEffect(() => {
+    testSupabaseConnection();
+  }, []);
+
   return (
    <>
     <header className="bg-white p-4 text-blue-900  text-center shadow-md dark:bg-blue-900 dark:text-white"><h1 className="text-3xl font-bold">Task Manager App</h1></header>
