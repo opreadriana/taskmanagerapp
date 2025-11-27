@@ -2,23 +2,31 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useTasks } from "../context/TasksContext";
+import { supabase } from "../../../supabaseClient";
 
 export default function TodoPage() {
-  const {tasks, setTasks} = useTasks();
+  const {tasks, setTasks, addTask} = useTasks();
   const [input, setInput] = useState("");
 
-  function addTask(e: React.FormEvent) {
-    e.preventDefault();
-    if (input.trim()) {
-      setTasks([...tasks, { text: input.trim(), done: false }]);
-      setInput("");
-    }
+  // use await because addTask is an async function, it talks to Supabase
+  async function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+  if (input.trim()) {
+    await addTask(input.trim());
+    setInput("");
   }
 
-   function toggleTask(idx: number) {
+  //update the 'done' property in DB and state
+  async function toggleTask(idx: number) {
+    const task = tasks[idx];
+    const updatedDone = !task.done;
+    await supabase
+      .from('tasks')
+      .update({ done: updatedDone })
+      .eq('id', task.id);
     setTasks(tasks =>
-      tasks.map((task, i) =>
-        i === idx ? { ...task, done: !task.done } : task
+      tasks.map((t, i) =>
+        i === idx ? { ...t, done: updatedDone } : t
       )
     );
   }
@@ -31,7 +39,7 @@ export default function TodoPage() {
 
       <main className="flex-1 bg-gray-100 text-gray-900 p-8 min-h-[60vh] dark:bg-gray-900 dark:text-gray-200">
         <h2 className="text-2xl font-semibold mb-4">Your To-Do List</h2>
-         <form onSubmit={addTask} className="flex gap-2 mb-6">
+        <form onSubmit={handleSubmit} className='flex gap-2 mb-6'>
           <input
             className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
             value={input}
