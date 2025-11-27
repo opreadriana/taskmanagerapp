@@ -17,7 +17,7 @@ export default function AITool() {
     setError(null);
     setResponse(null);
 
-    // check if the prompt includes the word 'tasks' and if it does, send tasks' information to endpoint
+    // check if the prompt includes the word 'tasks' and if it does, send tasks' information to endpoint, so we can get a result based on that
     let finalPrompt = prompt;
     if (prompt.toLowerCase().includes("tasks") ||
     prompt.toLowerCase().includes("task")) {
@@ -27,7 +27,7 @@ export default function AITool() {
       finalPrompt = `${prompt}\nHere are my tasks: ${tasksText}`;
     }
 
-    // check to avoid sending null/empty trimmed string sending prompt to OpenAI API
+    // check to avoid sending null/empty trimmed string prompt to OpenAI API
     if (!finalPrompt || typeof finalPrompt !== "string" || !finalPrompt.trim()) {
         setError("Please enter a prompt.");
         setLoading(false);
