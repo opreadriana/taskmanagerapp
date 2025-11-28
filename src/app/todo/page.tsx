@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTasks } from "../context/TasksContext";
 import { supabase } from "../../../supabaseClient";
 
@@ -8,12 +8,18 @@ export default function TodoPage() {
   const {tasks, setTasks, addTask} = useTasks();
   const [input, setInput] = useState("");
 
+  useEffect(() => {
+    console.log("TodoPage mounted");
+    console.log("Tasks array:", tasks);
+  }, [tasks]);
+
   // use await because addTask is an async function, it talks to Supabase
   async function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  if (input.trim()) {
-    await addTask(input.trim());
-    setInput("");
+    e.preventDefault();
+    if (input.trim()) {
+      await addTask(input.trim());
+      setInput("");
+    }
   }
 
   //update the 'done' property in DB and state
@@ -62,7 +68,7 @@ export default function TodoPage() {
         </form>
         <ul>
           {tasks.length === 0 ? (
-            <li className="text-gray-500">No tasks found.</li>
+            <li className="text-gray-500">No tasks found. Try adding a task above!</li>
           ) : (
             tasks.map((task, idx) => (
               <li key={task.id} className="flex items-center mb-2">
