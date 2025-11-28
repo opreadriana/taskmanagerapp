@@ -25,7 +25,7 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     fetchTasks();
   }, []);
 
-  // Add a task to Supabase with the given text and update Contex
+  // Add a task to Supabase with the given text and update Context
   async function addTask(text: string) {
     const { data } = await supabase
       .from('tasks')

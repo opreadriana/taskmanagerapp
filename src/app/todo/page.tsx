@@ -19,11 +19,18 @@ export default function TodoPage() {
   //update the 'done' property in DB and state
   async function toggleTask(idx: number) {
     const task = tasks[idx];
+    if (!task || !task.id) {
+      console.error("Task or task.id is undefined!", task);
+      return;
+    }
     const updatedDone = !task.done;
-    await supabase
+    const { error } = await supabase
       .from('tasks')
       .update({ done: updatedDone })
       .eq('id', task.id);
+    if (error) {
+      console.error("Supabase update error:", error);
+    }
     setTasks(tasks =>
       tasks.map((t, i) =>
         i === idx ? { ...t, done: updatedDone } : t
@@ -54,19 +61,23 @@ export default function TodoPage() {
           </button>
         </form>
         <ul>
-          {tasks.map((task, idx) => (
-            <li key={idx} className="flex items-center mb-2">
-              <input
-                type="checkbox"
-                checked={task.done}
-                onChange={() => toggleTask(idx)}
-                className="mr-2"
-              />
-              <span className={task.done ? "line-through opacity-60" : ""}>
-                {task.text}
-              </span>
-            </li>
-          ))}
+          {tasks.length === 0 ? (
+            <li className="text-gray-500">No tasks found.</li>
+          ) : (
+            tasks.map((task, idx) => (
+              <li key={task.id} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  checked={task.done}
+                  onChange={async () => { await toggleTask(idx); }}
+                  className="mr-2"
+                />
+                <span className={task.done ? "line-through opacity-60" : ""}>
+                  {task.text}
+                </span>
+              </li>
+            ))
+          )}
         </ul>
 
 

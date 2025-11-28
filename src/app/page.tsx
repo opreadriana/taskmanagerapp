@@ -5,10 +5,6 @@ import { testSupabaseConnection } from '../../supabaseClient';
 import { useEffect } from "react";
 
 export default function Home() {
-  //test Supabase connection on component mount
-  useEffect(() => {
-    testSupabaseConnection();
-  }, []);
 
   return (
    <>
