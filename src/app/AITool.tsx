@@ -22,7 +22,10 @@ export default function AITool() {
     if (prompt.toLowerCase().includes("tasks") ||
     prompt.toLowerCase().includes("task")) {
       const tasksText = tasks.length
-        ? tasks.map(t => `${t.done ? "[x]" : "[ ]"} ${t.text}`).join(", ")
+        ? tasks.map(t => {
+            const dueStr = t.due_date ? ` (Due: ${new Date(t.due_date).toLocaleDateString()})` : '';
+            return `${t.done ? "[x]" : "[ ]"} ${t.text} [${t.priority}]${dueStr}`;
+          }).join(", ")
         : "No tasks found.";
       finalPrompt = `${prompt}\nHere are my tasks: ${tasksText}`;
     }
