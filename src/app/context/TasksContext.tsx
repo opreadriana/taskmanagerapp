@@ -27,10 +27,14 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
 
   // Add a task to Supabase with the given text and update Context
   async function addTask(text: string) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('tasks')
       .insert([{ text, done: false }])
       .select();
+    if (error) {
+      console.error("Supabase insert error:", error);
+    }
+    console.log("Supabase insert data:", data);
     if (data) setTasks(prev => [...prev, ...data]);
   }
 
