@@ -7,6 +7,8 @@ import { supabase } from "../../../supabaseClient";
 export default function TodoPage() {
   const {tasks, setTasks, addTask} = useTasks();
   const [input, setInput] = useState("");
+  const [priority, setPriority] = useState("Medium");
+  const [dueDate, setDueDate] = useState("");
 
   useEffect(() => {
     console.log("TodoPage mounted");
@@ -17,10 +19,22 @@ export default function TodoPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (input.trim()) {
-      await addTask(input.trim());
+      await addTask(input.trim(), priority, dueDate || null);
       setInput("");
+      setDueDate("");
+      setPriority("Medium");
     }
   }
+
+  // Sort tasks by priority (High > Medium > Low), then by due date
+  const sortedTasks = [...tasks].sort((a, b) => {
+    const priorityOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+    const aPriority = priorityOrder[a.priority as keyof typeof priorityOrder] ?? 1;
+    const bPriority = priorityOrder[b.priority as keyof typeof priorityOrder] ?? 1;
+    if (aPriority !== bPriority) return aPriority - bPriority;
+    if (a.due_date && b.due_date) return a.due_date.localeCompare(b.due_date);
+    return a.due_date ? -1 : 1;
+  });
 
   //update the 'done' property in DB and state
   async function toggleTask(idx: number) {
@@ -52,12 +66,27 @@ export default function TodoPage() {
 
       <main className="flex-1 bg-gray-100 text-gray-900 p-8 min-h-[60vh] dark:bg-gray-900 dark:text-gray-200">
         <h2 className="text-2xl font-semibold mb-4">Your To-Do List</h2>
-        <form onSubmit={handleSubmit} className='flex gap-2 mb-6'>
+        <form onSubmit={handleSubmit} className='flex gap-2 mb-6 flex-wrap'>
           <input
             className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder="Add a new task..."
+          />
+          <select
+            value={priority}
+            onChange={e => setPriority(e.target.value)}
+            className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
+          >
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+          <input
+            type="date"
+            value={dueDate}
+            onChange={e => setDueDate(e.target.value)}
+            className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
           />
           <button
             type="submit"
@@ -67,20 +96,36 @@ export default function TodoPage() {
           </button>
         </form>
         <ul>
-          {tasks.length === 0 ? (
+          {sortedTasks.length === 0 ? (
             <li className="text-gray-500">No tasks found. Try adding a task above!</li>
           ) : (
-            tasks.map((task, idx) => (
-              <li key={task.id} className="flex items-center mb-2">
-                <input
-                  type="checkbox"
-                  checked={task.done}
-                  onChange={async () => { await toggleTask(idx); }}
-                  className="mr-2"
-                />
-                <span className={task.done ? "line-through opacity-60" : ""}>
-                  {task.text}
-                </span>
+            sortedTasks.map((task, idx) => (
+              <li key={task.id} className="flex items-center justify-between mb-3 p-2 bg-white rounded dark:bg-gray-800">
+                <div className="flex items-center flex-1">
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={async () => { await toggleTask(tasks.findIndex(t => t.id === task.id)); }}
+                    className="mr-2"
+                  />
+                  <span className={task.done ? "line-through opacity-60" : ""}>
+                    {task.text}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 ml-4">
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    task.priority === 'High' ? 'bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-200' :
+                    task.priority === 'Medium' ? 'bg-yellow-200 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                    'bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-200'
+                  }`}>
+                    {task.priority}
+                  </span>
+                  {task.due_date && (
+                    <span className="text-xs text-gray-600 dark:text-gray-400">
+                      {new Date(task.due_date).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
               </li>
             ))
           )}

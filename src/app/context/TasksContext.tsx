@@ -2,12 +2,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../../../supabaseClient";
 
-export type Task = { id: string; text: string; done: boolean };
+export type Task = { id: string; text: string; done: boolean; priority: 'High' | 'Medium' | 'Low'; due_date: string | null };
 
 type TasksContextType = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  addTask: (text: string) => Promise<void>;
+  addTask: (text: string, priority: string, due_date: string | null) => Promise<void>;
 };
 
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
@@ -25,11 +25,11 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     fetchTasks();
   }, []);
 
-  // Add a task to Supabase with the given text and update Context
-  async function addTask(text: string) {
+  // Add a task to Supabase with the given text, priority, and due_date, then update Context
+  async function addTask(text: string, priority: string, due_date: string | null) {
     const { data, error } = await supabase
       .from('tasks')
-      .insert([{ text, done: false }])
+      .insert([{ text, done: false, priority: priority || 'Medium', due_date }])
       .select();
     if (error) {
       console.error("Supabase insert error:", error);

@@ -1,17 +1,15 @@
 "use client";
 import Link from "next/link";
 import AITool from "./AITool";
-import { testSupabaseConnection } from '../../supabaseClient';
-import { useEffect } from "react";
 
 export default function Home() {
 
   return (
    <>
-    <header className="bg-white p-4 text-blue-900  text-center shadow-md dark:bg-blue-900 dark:text-white"><h1 className="text-3xl font-bold">Task Manager App</h1></header>
+    <header className="bg-white p-4 text-blue-900  text-center shadow-md dark:bg-blue-900 dark:text-white"><h1 className="text-3xl font-bold">The Productivity App</h1></header>
 
     <main className="flex-1 bg-gray-100 text-gray-900 p-8 min-h-[60vh] dark:bg-gray-900 dark:text-gray-200">
-      <h2 className="text-2xl font-semibold mb-4"> Welcome to the Task Manager App!</h2>
+      <h2 className="text-2xl font-semibold mb-4"> Welcome to the Productivity App!</h2>
       <p className="mb-6">Manage your tasks efficiently and stay organised.</p>
 
       <Link href='/todo'>
@@ -26,7 +24,7 @@ export default function Home() {
     </main>
 
     <footer className="bg-white text-blue-900 text-center p-4 dark:bg-blue-900 dark:text-white">
-      <p>Thank you for choosing Task Manager. Please provide feedback at the email address below: example@gmail.com</p>
+      <p>Thank you for choosing The Productivity App. Please provide feedback at the email address below: example@gmail.com</p>
     </footer>
    </>
   );

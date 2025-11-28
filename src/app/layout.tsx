@@ -5,8 +5,8 @@ import { TasksProvider } from "./context/TasksContext";
 
 
 export const metadata: Metadata = {
-  title: "Task Manager App",
-  description: "Personal Project - Task Manager App",
+  title: "Productivity App",
+  description: "Personal Project - Productivity App",
 };
 
 export default function RootLayout({
