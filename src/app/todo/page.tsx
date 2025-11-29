@@ -100,7 +100,7 @@ export default function TodoPage() {
           {sortedTasks.length === 0 ? (
             <li className="text-gray-500">No tasks found. Try adding a task above!</li>
           ) : (
-            sortedTasks.map((task, idx) => (
+            sortedTasks.map((task) => (
               <li key={task.id} className="flex items-center justify-between mb-3 p-2 bg-white rounded dark:bg-gray-800">
                 <div className="flex items-center flex-1">
                   <input
