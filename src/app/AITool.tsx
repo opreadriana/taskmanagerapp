@@ -47,7 +47,7 @@ export default function AITool() {
       setResponse(data.choices?.[0]?.message?.content || "No response from AI.");
       setLastPrompt(finalPrompt);
       setPrompt('');
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
