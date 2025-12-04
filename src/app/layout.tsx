@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col"
+      <body className="min-h-screen flex flex-col bg-blue-50 text-blue-900 dark:bg-blue-900 dark:text-blue-100"
       >
         <TasksProvider>
          <ThemeToggle />

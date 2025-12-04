@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export default function ThemeToggle() {
     //the state to manage the theme, defaulting to 'light'
@@ -21,11 +22,12 @@ export default function ThemeToggle() {
   }, [theme]);
 
   return (
-    <button
-  className="self-start m-4 text-blue-900 bg-blue-200 px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
-  onClick={() => setTheme(theme === "light" ? "dark" : "light")}
->
-      Switch to {theme =='light' ? 'Dark' : 'Light'} Mode
-    </button>
+    <Button
+      variant="outline"
+      className="self-start m-4 border-blue-300 bg-blue-50 text-blue-900 hover:bg-blue-100 dark:border-blue-600 dark:bg-blue-800 dark:text-blue-100 dark:hover:bg-blue-700"
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+    >
+      Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+    </Button>
   );
 }
