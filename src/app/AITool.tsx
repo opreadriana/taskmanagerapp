@@ -55,35 +55,44 @@ export default function AITool() {
   }
 
   return (
-    <div className="my-6 p-4 bg-white dark:bg-blue-950 rounded shadow max-w-xl">
-      <form onSubmit={handleAsk} className="flex gap-2 mb-4">
-        <input
-          className="flex-1 px-2 py-1 rounded border border-blue-200 dark:bg-blue-900 dark:text-white"
-          value={prompt}
-          onChange={e => setPrompt(e.target.value)}
-          placeholder="Ask the AI anything..."
-        />
-        <button
-          type="submit"
-          className="text-blue-900 bg-blue-200 px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
-          disabled={loading}
-        >
-          {loading ? "Asking..." : "Ask"}
-        </button>
-      </form>
-      {error && <div className="text-red-600 mb-2">{error}</div>}
-      {response && (
+    <div className="my-6 p-4 bg-white dark:bg-blue-950 rounded shadow max-w-xl flex flex-col h-full">
+      
+      <div className="flex-1 overflow-y-auto mb-4">
         <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded">
-          <strong>You:</strong> {lastPrompt}
-          <br /> <br/>
-          <strong>AI:</strong> {response}
-        </div>
-      )}
-      {!response && (
-        <div className="text-xs text-gray-500 mb-2">
-          Powered by ChatGPT (gpt-3.5-turbo)
-        </div>
-      )}
+            <strong>AI:</strong> Hello, I am your personal AI Assistant. How can I help you today?
+          </div>
+        {response && (
+          <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded">
+            <strong>You:</strong> {lastPrompt}
+            <br /> <br/>
+            <strong>AI:</strong> {response}
+          </div>
+        )}
+      </div>
+      
+      <div className="border-t pt-4">
+        {error && <div className="text-red-600 mb-2 text-sm">{error}</div>}
+        <form onSubmit={handleAsk} className="flex gap-2">
+          <input
+            className="flex-1 px-2 py-1 rounded border border-blue-200 dark:bg-blue-900 dark:text-white"
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+            placeholder="Ask the AI anything..."
+          />
+          <button
+            type="submit"
+            className="text-blue-900 bg-blue-200 px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
+            disabled={loading}
+          >
+            {loading ? "Asking..." : "Ask"}
+          </button>
+        </form>
+        {!response && (
+          <div className="text-xs text-gray-500 mt-2">
+            Powered by ChatGPT (gpt-3.5-turbo)
+          </div>
+        )}
+      </div>
     </div>
   );
 }
