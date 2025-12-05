@@ -14,6 +14,16 @@ export default function Home() {
       <div className="flex-1 flex flex-col items-center">
         <div className="w-full max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4"> Welcome to the Productivity App!</h2>
+          
+          {/* HD Notebook image */}
+          <div className="mb-40 flex justify-start">
+            <img 
+              src="/notebook-writing.jpg" 
+              alt="Person writing in notebook" 
+              className="w-80 h-60 object-cover rounded-lg shadow-lg"
+            />
+          </div>
+          
           <p className="mb-6">Manage your tasks efficiently and stay organised.</p>
 
           <Link href='/todo'>
