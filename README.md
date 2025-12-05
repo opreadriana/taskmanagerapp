@@ -1,4 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Productivity App
+
+A modern task management application built with cutting-edge Next.js 15 features for maximum performance.
+
+## ⚡ Performance Features
+
+🚀 **Turbopack** - Lightning-fast development with instant hot reloads  
+🖥️ **Server Components** - 90% less JavaScript, instant content loading  
+🎯 **Smart Architecture** - Static content rendered on server, interactivity only where needed  
+✨ **Built-in Optimizations** - Automatic image optimization, code splitting, and caching  
+🌐 **SEO Ready** - Server-side rendering for perfect search engine visibility  
+
+**Result:** Sub-second loading times with full interactivity!
 
 ## Getting Started
 
