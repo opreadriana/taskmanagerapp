@@ -1,26 +1,28 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import AITool from "./AITool";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
 
   return (
-   <>
-    <header className="p-4 text-center shadow-md transition-colors duration-300"><h1 className="text-3xl font-bold">The Productivity App</h1></header>
+   <div className="h-screen flex flex-col">
+    <header className="flex-shrink-0 p-4 text-center shadow-md transition-colors duration-300"><h1 className="text-3xl font-bold">The Productivity App</h1></header>
 
-    <main className="flex-1 p-8 min-h-[60vh] flex transition-colors duration-300">
+    <main className="flex-1 p-8 flex transition-colors duration-300 min-h-0">
       {/* Left side - Main content */}
-      <div className="flex-1 flex flex-col items-center">
+      <div className="flex-1 flex flex-col items-center overflow-y-auto">
         <div className="w-full max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4"> Welcome to the Productivity App!</h2>
           
-          {/* HD Notebook image */}
-          <div className="mb-40 flex justify-start">
-            <img 
+          <div className="mb-6 flex justify-start">
+            <Image 
               src="/notebook-writing.jpg" 
               alt="Person writing in notebook" 
-              className="w-80 h-60 object-cover rounded-lg shadow-lg"
+              width={256}
+              height={192}
+              className="w-64 h-48 object-cover rounded-lg shadow-lg"
             />
           </div>
           
@@ -35,19 +37,18 @@ export default function Home() {
       </div>
 
       {/* Right side - AI Chat */}
-      <div className="w-96 ml-8 pl-8 border-l-2 border-blue-300 flex flex-col h-full">
+      <div className="w-96 ml-8 pl-8 border-l-2 border-blue-300 flex flex-col">
         <h3 className="text-lg font-semibold mb-2">AI Assistant</h3>
         
-        {/* Input at bottom */}
-        <div className="border-t border-blue-200 pt-4">
+        <div className="flex-1">
           <AITool/>
         </div>
       </div>
     </main>
 
-    <footer className="text-center p-4 transition-colors duration-300">
+    <footer className="flex-shrink-0 text-center p-4 transition-colors duration-300">
       <p>Thank you for choosing The Productivity App. Please provide feedback at the email address below: example@gmail.com</p>
     </footer>
-   </>
+   </div>
   );
 }

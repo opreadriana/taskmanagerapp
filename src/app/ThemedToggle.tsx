@@ -76,7 +76,7 @@ export default function ThemeToggle() {
         color: isDark ? '#dbeafe' : '#1e3a8a',
         borderColor: isDark ? '#2563eb' : '#93c5fd',
       }}
-      className="self-start m-4 transition-colors duration-300"
+      className="fixed top-4 left-4 z-10 transition-colors duration-300"
       onClick={toggleTheme}
     >
       Switch to {isDark ? 'Light' : 'Dark'} Mode
