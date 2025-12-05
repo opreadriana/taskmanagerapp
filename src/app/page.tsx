@@ -9,20 +9,38 @@ export default function Home() {
    <>
     <header className="p-4 text-center shadow-md transition-colors duration-300"><h1 className="text-3xl font-bold">The Productivity App</h1></header>
 
-    <main className="flex-1 p-8 min-h-[60vh] flex flex-col items-center transition-colors duration-300">
-      <div className="w-full max-w-2xl">
-        <h2 className="text-2xl font-semibold mb-4"> Welcome to the Productivity App!</h2>
-        <p className="mb-6">Manage your tasks efficiently and stay organised.</p>
+    <main className="flex-1 p-8 min-h-[60vh] flex transition-colors duration-300">
+      {/* Left side - Main content */}
+      <div className="flex-1 flex flex-col items-center">
+        <div className="w-full max-w-2xl">
+          <h2 className="text-2xl font-semibold mb-4"> Welcome to the Productivity App!</h2>
+          <p className="mb-6">Manage your tasks efficiently and stay organised.</p>
 
-        <Link href='/todo'>
-          <Button className="bg-blue-200 text-blue-900 hover:bg-blue-300 transition-colors">
-            Go to To-Do List page
-          </Button>
-        </Link>
+          <Link href='/todo'>
+            <Button className="bg-blue-200 text-blue-900 hover:bg-blue-300 transition-colors">
+              Go to To-Do List page
+            </Button>
+          </Link>
+        </div>
+      </div>
 
-        <p className="mt-96 text-lg">Do you want to try our new AI Tool?</p>
-        <p className='text-sm'>*Try our new feature and ask the AI about your Tasks from the To-Do List Page.</p>
-        <AITool/>
+      {/* Right side - AI Chat */}
+      <div className="w-80 ml-8 pl-8 border-l-2 border-blue-300 flex flex-col h-full">
+        <h3 className="text-lg font-semibold mb-2">AI Assistant</h3>
+        
+        {/* Chat messages area */}
+        <div className="flex-1 mb-4 min-h-0">
+          <div className="h-full overflow-y-auto bg-blue-50 rounded-lg p-4 border border-blue-200">
+            {/* Chat messages will appear here */}
+            <p className="text-sm text-gray-500 italic">Start a conversation...</p>
+          </div>
+        </div>
+        
+        {/* Input at bottom */}
+        <div className="border-t border-blue-200 pt-4">
+          <p className="text-sm mb-2">Ask me about your tasks!</p>
+          <AITool/>
+        </div>
       </div>
     </main>
 
