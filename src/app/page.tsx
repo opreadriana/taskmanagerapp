@@ -25,20 +25,11 @@ export default function Home() {
       </div>
 
       {/* Right side - AI Chat */}
-      <div className="w-80 ml-8 pl-8 border-l-2 border-blue-300 flex flex-col h-full">
+      <div className="w-96 ml-8 pl-8 border-l-2 border-blue-300 flex flex-col h-full">
         <h3 className="text-lg font-semibold mb-2">AI Assistant</h3>
-        
-        {/* Chat messages area */}
-        <div className="flex-1 mb-4 min-h-0">
-          <div className="h-full overflow-y-auto bg-blue-50 rounded-lg p-4 border border-blue-200">
-            {/* Chat messages will appear here */}
-            <p className="text-sm text-gray-500 italic">Start a conversation...</p>
-          </div>
-        </div>
         
         {/* Input at bottom */}
         <div className="border-t border-blue-200 pt-4">
-          <p className="text-sm mb-2">Ask me about your tasks!</p>
           <AITool/>
         </div>
       </div>
