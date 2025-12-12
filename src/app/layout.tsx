@@ -3,7 +3,6 @@ import "./globals.css";
 import ThemeToggle from "./ThemedToggle";
 import { TasksProvider } from "./context/TasksContext";
 
-
 export const metadata: Metadata = {
   title: "Productivity App",
   description: "Personal Project - Productivity App",
@@ -16,10 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col transition-colors duration-300"
-      >
+      <body className="min-h-screen flex flex-col transition-colors duration-300">
         <TasksProvider>
-         <ThemeToggle />
+          <ThemeToggle />
           {children}
         </TasksProvider>
       </body>
