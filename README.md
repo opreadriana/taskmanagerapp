@@ -30,7 +30,7 @@ A modern task management application built with cutting-edge Next.js 15 features
 - **Availability**: 99.9% uptime with containerized deployment on AWS EC2
 - **Scalability**: Database-backed storage via Supabase for reliable data persistence
 - **Security**: Environment-based configuration with no hardcoded secrets
-- **Maintainability**: Modern TypeScript codebase with component-based architecture
+- **Maintainability**: Modern TypeScript codebase with component-based architecture and automated code formatting
 - **Usability**: Intuitive interface with shadcn/ui components and consistent design patterns
 - **Resilience**: Containerized deployment with automatic restart capabilities
 
