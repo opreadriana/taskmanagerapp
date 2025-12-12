@@ -12,6 +12,26 @@ A modern task management application built with cutting-edge Next.js 15 features
 
 **Result:** Sub-second loading times with full interactivity!
 
+## 📋 Requirements
+
+### Functional Requirements
+- **Task Management**: Create, view, edit, and delete tasks with priority levels (High/Medium/Low)
+- **Due Date Tracking**: Set and display task deadlines with visual indicators
+- **Task Status**: Mark tasks as complete/incomplete with persistent state
+- **AI Assistant**: Integrated chat interface for task-related assistance and productivity tips
+- **Theme Support**: Light/dark mode toggle with user preference persistence
+- **Responsive Design**: Full functionality across desktop, tablet, and mobile devices
+- **Real-time Updates**: Instant task synchronization across all connected sessions
+
+### Non-Functional Requirements
+- **Performance**: Sub-second page load times with Turbopack and Server Components
+- **Availability**: 99.9% uptime with containerized deployment on AWS EC2
+- **Scalability**: Database-backed storage via Supabase for reliable data persistence
+- **Security**: Environment-based configuration with no hardcoded secrets
+- **Maintainability**: Modern TypeScript codebase with component-based architecture
+- **Usability**: Intuitive interface with shadcn/ui components and consistent design patterns
+- **Resilience**: Containerized deployment with automatic restart capabilities
+
 ## Getting Started
 
 First, run the development server:
