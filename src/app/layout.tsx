@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ThemeToggle from "./ThemedToggle";
-import { TasksProvider } from "./context/TasksContext";
+import ThemeToggle from "../features/theme/components/ThemeToggle";
+import { TasksProvider } from "../features/tasks/context/TasksContext";
 
 export const metadata: Metadata = {
   title: "Productivity App",

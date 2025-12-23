@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import AITool from "./AITool";
-import { Button } from "@/components/ui/button";
+import AITool from "../features/ai/components/AITool";
+import { Button } from "../shared/components/ui/button";
 
 export default function Home() {
   return (

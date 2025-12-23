@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useTasks } from "../../features/tasks/context/TasksContext";
-import { supabase } from "../../../supabaseClient";
+import { useTasks } from "../context/TasksContext";
+import { supabase } from "../../../../supabaseClient";
 
 export default function TodoPage() {
   const { tasks, setTasks, addTask, loading } = useTasks();
