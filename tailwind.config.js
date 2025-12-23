@@ -3,6 +3,8 @@ module.exports = {
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx}",
     "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/features/**/*.{js,ts,jsx,tsx}",
+    "./src/shared/**/*.{js,ts,jsx,tsx}",
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
@@ -56,8 +58,5 @@ module.exports = {
       },
     },
   },
-<<<<<<< HEAD
   plugins: [],
-=======
->>>>>>> 1a0e21b7477de3421437cbb29739e2a1d66eb44d
 };
