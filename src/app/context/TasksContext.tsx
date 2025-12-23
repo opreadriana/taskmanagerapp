@@ -13,6 +13,7 @@ export type Task = {
 type TasksContextType = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  loading: boolean;
   addTask: (
     text: string,
     priority: string,
@@ -25,16 +26,19 @@ const TasksContext = createContext<TasksContextType | undefined>(undefined);
 // React state is used to store the 'tasks', and we pass the tasks and function to update them as the value to the Provider
 export function TasksProvider({ children }: { children: React.ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch tasks from Supabase on mount
   useEffect(() => {
     async function fetchTasks() {
+      setLoading(true);
       const { data, error } = await supabase.from("tasks").select("*");
       if (data) {
         setTasks(data);
       } else {
         console.log("Error fetching tasks: ", error);
       }
+      setLoading(false);
     }
     fetchTasks();
   }, []);
@@ -57,7 +61,7 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <TasksContext.Provider value={{ tasks, setTasks, addTask }}>
+    <TasksContext.Provider value={{ tasks, setTasks, loading, addTask }}>
       {children}
     </TasksContext.Provider>
   );

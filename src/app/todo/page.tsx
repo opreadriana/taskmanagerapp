@@ -5,7 +5,7 @@ import { useTasks } from "../context/TasksContext";
 import { supabase } from "../../../supabaseClient";
 
 export default function TodoPage() {
-  const { tasks, setTasks, addTask } = useTasks();
+  const { tasks, setTasks, addTask, loading } = useTasks();
   const [input, setInput] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [dueDate, setDueDate] = useState("");
@@ -96,12 +96,19 @@ export default function TodoPage() {
               Add
             </button>
           </form>
-          <ul>
-            {sortedTasks.length === 0 ? (
-              <li className="text-gray-500">
-                No tasks found. Try adding a task above!
-              </li>
-            ) : (
+          
+          {loading ? (
+            <div className="text-center text-gray-500 dark:text-gray-400">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-900 dark:border-blue-300"></div>
+              <p className="mt-2">Loading tasks...</p>
+            </div>
+          ) : (
+            <ul>
+              {sortedTasks.length === 0 ? (
+                <li className="text-gray-500">
+                  No tasks found. Try adding a task above!
+                </li>
+              ) : (
               sortedTasks.map((task) => (
                 <li
                   key={task.id}
@@ -146,6 +153,7 @@ export default function TodoPage() {
               ))
             )}
           </ul>
+          )}
 
           <Link href="/">
             <button className="mt-8 text-blue-900 bg-blue-200 px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800">
