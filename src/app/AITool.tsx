@@ -9,7 +9,7 @@ export default function AITool() {
   const [error, setError] = useState<string | null>(null);
   const [lastPrompt, setLastPrompt] = useState<string | null>(null);
 
-  const {tasks} = useTasks();
+  const { tasks } = useTasks();
 
   async function handleAsk(e: React.FormEvent) {
     e.preventDefault();
@@ -19,22 +19,32 @@ export default function AITool() {
 
     // check if the prompt includes the word 'tasks' and if it does, send tasks' information to endpoint, so we can get a result based on that
     let finalPrompt = prompt;
-    if (prompt.toLowerCase().includes("tasks") ||
-    prompt.toLowerCase().includes("task")) {
+    if (
+      prompt.toLowerCase().includes("tasks") ||
+      prompt.toLowerCase().includes("task")
+    ) {
       const tasksText = tasks.length
-        ? tasks.map(t => {
-            const dueStr = t.due_date ? ` (Due: ${new Date(t.due_date).toLocaleDateString()})` : '';
-            return `${t.done ? "[x]" : "[ ]"} ${t.text} [${t.priority}]${dueStr}`;
-          }).join(", ")
+        ? tasks
+            .map((t) => {
+              const dueStr = t.due_date
+                ? ` (Due: ${new Date(t.due_date).toLocaleDateString()})`
+                : "";
+              return `${t.done ? "[x]" : "[ ]"} ${t.text} [${t.priority}]${dueStr}`;
+            })
+            .join(", ")
         : "No tasks found.";
       finalPrompt = `${prompt}\nHere are my tasks: ${tasksText}`;
     }
 
     // check to avoid sending null/empty trimmed string prompt to OpenAI API
-    if (!finalPrompt || typeof finalPrompt !== "string" || !finalPrompt.trim()) {
-        setError("Please enter a prompt.");
-        setLoading(false);
-    return;
+    if (
+      !finalPrompt ||
+      typeof finalPrompt !== "string" ||
+      !finalPrompt.trim()
+    ) {
+      setError("Please enter a prompt.");
+      setLoading(false);
+      return;
     }
 
     try {
@@ -44,9 +54,11 @@ export default function AITool() {
         body: JSON.stringify({ prompt: finalPrompt }),
       });
       const data = await res.json();
-      setResponse(data.choices?.[0]?.message?.content || "No response from AI.");
+      setResponse(
+        data.choices?.[0]?.message?.content || "No response from AI."
+      );
       setLastPrompt(finalPrompt);
-      setPrompt('');
+      setPrompt("");
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -60,7 +72,7 @@ export default function AITool() {
         <input
           className="flex-1 px-2 py-1 rounded border border-blue-200 dark:bg-blue-900 dark:text-white"
           value={prompt}
-          onChange={e => setPrompt(e.target.value)}
+          onChange={(e) => setPrompt(e.target.value)}
           placeholder="Ask the AI anything..."
         />
         <button
@@ -75,7 +87,7 @@ export default function AITool() {
       {response && (
         <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded">
           <strong>You:</strong> {lastPrompt}
-          <br /> <br/>
+          <br /> <br />
           <strong>AI:</strong> {response}
         </div>
       )}

@@ -2,12 +2,22 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../../../supabaseClient";
 
-export type Task = { id: string; text: string; done: boolean; priority: 'High' | 'Medium' | 'Low'; due_date: string | null };
+export type Task = {
+  id: string;
+  text: string;
+  done: boolean;
+  priority: "High" | "Medium" | "Low";
+  due_date: string | null;
+};
 
 type TasksContextType = {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
-  addTask: (text: string, priority: string, due_date: string | null) => Promise<void>;
+  addTask: (
+    text: string,
+    priority: string,
+    due_date: string | null
+  ) => Promise<void>;
 };
 
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
@@ -19,23 +29,31 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   // Fetch tasks from Supabase on mount
   useEffect(() => {
     async function fetchTasks() {
-      const { data, error } = await supabase.from('tasks').select('*');
-      if (data){ setTasks(data)} else {console.log('Error fetching tasks: ', error)};
+      const { data, error } = await supabase.from("tasks").select("*");
+      if (data) {
+        setTasks(data);
+      } else {
+        console.log("Error fetching tasks: ", error);
+      }
     }
     fetchTasks();
   }, []);
 
   // Add a task to Supabase with the given text, priority, and due_date, then update Context
-  async function addTask(text: string, priority: string, due_date: string | null) {
+  async function addTask(
+    text: string,
+    priority: string,
+    due_date: string | null
+  ) {
     const { data, error } = await supabase
-      .from('tasks')
-      .insert([{ text, done: false, priority: priority || 'Medium', due_date }])
+      .from("tasks")
+      .insert([{ text, done: false, priority: priority || "Medium", due_date }])
       .select();
     if (error) {
       console.error("Supabase insert error:", error);
     }
     console.log("Supabase insert data:", data);
-    if (data) setTasks(prev => [...prev, ...data]);
+    if (data) setTasks((prev) => [...prev, ...data]);
   }
 
   return (
