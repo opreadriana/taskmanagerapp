@@ -58,10 +58,6 @@ export default function Home() {
           at the email address below: example@gmail.com
         </p>
       </footer>
-<<<<<<< HEAD
-    </>
-=======
     </div>
->>>>>>> 1a0e21b7477de3421437cbb29739e2a1d66eb44d
   );
 }

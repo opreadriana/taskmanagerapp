@@ -1,6 +1,6 @@
 "use client";
+import { useTasks } from "../../tasks/context/TasksContext";
 import { useState } from "react";
-import { useTasks } from "../tasks/context/TasksContext";
 
 export default function AITool() {
   const [prompt, setPrompt] = useState("");
