@@ -38,7 +38,7 @@ export default function TodoPage() {
     return a.due_date ? -1 : 1;
   });
 
-  //update the 'done' property in DB and state
+  //update the 'done' property and completed_at timestamp (which gets current timestamp) in DB and state
   async function toggleTask(idx: number) {
     const task = tasks[idx];
     if (!task || !task.id) {
@@ -46,15 +46,21 @@ export default function TodoPage() {
       return;
     }
     const updatedDone = !task.done;
+    const completedAt = updatedDone ? new Date().toISOString() : null;
+    
     const { error } = await supabase
       .from("tasks")
-      .update({ done: updatedDone })
+      .update({ 
+        done: updatedDone,
+        completed_at: completedAt
+      })
       .eq("id", task.id);
+      
     if (error) {
       console.error("Supabase update error:", error);
     }
     setTasks((tasks) =>
-      tasks.map((t, i) => (i === idx ? { ...t, done: updatedDone } : t))
+      tasks.map((t, i) => (i === idx ? { ...t, done: updatedDone, completed_at: completedAt } : t))
     );
   }
 
