@@ -28,11 +28,13 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch tasks from Supabase on mount
+  // Fetch tasks from Supabase on mount, and avoid fetching auto-generated columns
   useEffect(() => {
     async function fetchTasks() {
       setLoading(true);
-      const { data, error } = await supabase.from("tasks").select("*");
+      const { data, error } = await supabase
+        .from("tasks")
+        .select("id, text, done, priority, due_date");
       if (data) {
         setTasks(data);
       } else {
