@@ -56,8 +56,4 @@ module.exports = {
       },
     },
   },
-<<<<<<< HEAD
-  plugins: [],
-=======
->>>>>>> 1a0e21b7477de3421437cbb29739e2a1d66eb44d
 };
