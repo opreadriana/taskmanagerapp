@@ -65,6 +65,8 @@ export default function TodoPage() {
     );
   }
 
+  console.log('tasks array: ', tasks);
+
   return (
     <>
       <header className="bg-white p-4 text-blue-900 text-center shadow-md dark:bg-blue-900 dark:text-white">
@@ -150,11 +152,16 @@ export default function TodoPage() {
                     >
                       {task.priority}
                     </span>
-                    {task.due_date && (
+                    Due Date: {task.due_date && (
                       <span className="text-xs text-gray-600 dark:text-gray-400">
                         {new Date(task.due_date).toLocaleDateString()}
                       </span>
                     )}
+                    Completed At Date:  {task.completed_at && (
+                      <span className="text-xs text-gray-600  dark:text-gray-400">
+                        {new Date(task.completed_at).toLocaleString()}
+                      </span>
+)}
                   </div>
                 </li>
               ))

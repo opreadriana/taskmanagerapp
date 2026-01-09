@@ -8,6 +8,7 @@ export type Task = {
   done: boolean;
   priority: "High" | "Medium" | "Low";
   due_date: string | null;
+  completed_at: string | null;
 };
 
 type TasksContextType = {
@@ -34,7 +35,7 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       const { data, error } = await supabase
         .from("tasks")
-        .select("id, text, done, priority, due_date");
+        .select("id, text, done, priority, due_date, completed_at");
       if (data) {
         setTasks(data);
       } else {
@@ -53,7 +54,7 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   ) {
     const { data, error } = await supabase
       .from("tasks")
-      .insert([{ text, done: false, priority: priority || "Medium", due_date }])
+      .insert([{ text, done: false, priority: priority || "Medium", due_date, completed_at: null }])
       .select();
     if (error) {
       console.error("Supabase insert error:", error);

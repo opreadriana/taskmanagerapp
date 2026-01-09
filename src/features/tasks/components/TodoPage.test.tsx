@@ -1,7 +1,7 @@
 import React from "react";
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import TodoPage from "./TodoPage";
-import { TasksProvider, TasksContext } from "../../../app/TasksContext";
+import { TasksProvider } from "../../../app/TasksContext";
 
 jest.mock("../../../../supabaseClient", () => ({
   supabase: {
@@ -14,8 +14,9 @@ jest.mock("../../../../supabaseClient", () => ({
             done: false,
             priority: "High",
             due_date: "2026-01-10",
+            completed_at: null,
           },
-          { id: 2, text: "Another Task", done: true, priority: "Low", due_date: null },
+          { id: 2, text: "Another Task", done: true, priority: "Low", due_date: null, completed_at: null },
         ],
         error: null,
       }),
