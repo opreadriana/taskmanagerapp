@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 import TodoPage from "./TodoPage";
-import { TasksProvider, TasksContext } from "../context/TasksContext";
+import { TasksProvider, TasksContext } from "../../../app/TasksContext";
 
 jest.mock("../../../../supabaseClient", () => ({
   supabase: {

@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { supabase } from "../../../../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 export type Task = {
   id: string;
