@@ -1,5 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
+// SCENARIO 1: Adding a New Task
 Given("I am on the todo page", () => {
   cy.visit("/todo");
   // Wait for the page to fully load and the input to be ready
@@ -20,6 +21,7 @@ Then("I should see {string} in the task list", (taskText: string) => {
   cy.contains(taskText).should("be.visible");
 });
 
+// SCENARIO 2: Marking a Task as Done
 Given("I have added a task {string}", (taskText: string) => {
   cy.get('input[placeholder*="task"]').clear().type(taskText);
   cy.contains("button", "Add").click();
@@ -39,8 +41,10 @@ Then("I should see a completion timestamp", () => {
   cy.contains(/Completed At Date:/).should("be.visible");
 });
 
+// SCENARIO 3: Viewing Multiple Tasks
 Given("I have added tasks:", (dataTable: { hashes: () => { task: string }[] }) => {
   const tasks = dataTable.hashes();
+  // Loops through each task and types it and click Add button
   tasks.forEach((row) => {
     cy.get('input[placeholder*="task"]').clear().type(row.task);
     cy.contains("button", "Add").click();
