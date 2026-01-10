@@ -1,7 +1,8 @@
 "use client";
+import React from "react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useTasks } from "../context/TasksContext";
+import { useTasks } from "../../../app/TasksContext";
 import { supabase } from "../../../../supabaseClient";
 
 export default function TodoPage() {
@@ -63,6 +64,8 @@ export default function TodoPage() {
       tasks.map((t, i) => (i === idx ? { ...t, done: updatedDone, completed_at: completedAt } : t))
     );
   }
+
+  console.log('tasks array: ', tasks);
 
   return (
     <>
@@ -149,11 +152,16 @@ export default function TodoPage() {
                     >
                       {task.priority}
                     </span>
-                    {task.due_date && (
+                    Due Date: {task.due_date && (
                       <span className="text-xs text-gray-600 dark:text-gray-400">
                         {new Date(task.due_date).toLocaleDateString()}
                       </span>
                     )}
+                    Completed At Date:  {task.completed_at && (
+                      <span className="text-xs text-gray-600  dark:text-gray-400">
+                        {new Date(task.completed_at).toLocaleString()}
+                      </span>
+)}
                   </div>
                 </li>
               ))

@@ -1,5 +1,6 @@
 "use client";
-import { useTasks } from "../../tasks/context/TasksContext";
+import React from "react";
+import { useTasks } from "../../../app/TasksContext";
 import { useState } from "react";
 
 export default function AITool() {
