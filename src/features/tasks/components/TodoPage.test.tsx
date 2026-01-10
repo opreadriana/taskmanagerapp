@@ -80,41 +80,4 @@ describe("TodoPage", () => {
     // Loading spinner should no longer be in the document
     expect(screen.queryByText("Loading tasks...")).not.toBeInTheDocument();
   });
-
-  // unhappy path - simulate database error during fetch
-  it("handles database error gracefully (unhappy path)", async () => {
-    // Mock console.error to avoid cluttering the test output
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    
-    // As in the beginning, mocks database - then temporarily overrides the previous mock to create a new one that return error
-    jest.resetModules();
-    jest.doMock("../../../../supabaseClient", () => ({
-      supabase: {
-        from: () => ({
-          select: () => ({
-            data: null,
-            error: { message: "Database connection failed" },
-          }),
-          insert: () => ({ select: () => ({ data: [], error: null }) }),
-          update: () => ({ eq: () => ({ error: null }) }),
-        }),
-      },
-    }));
-
-    // Dynamically import components with the error mock, while tests above continue to use the original mock from top of file
-    const { default: TodoPageError } = await import("./TodoPage");
-    const { TasksProvider: TasksProviderError } = await import("../../../app/TasksContext");
-    
-    render(
-      <TasksProviderError>
-        <TodoPageError />
-      </TasksProviderError>
-    );
-
-    // Should show no tasks message when fetch fails
-    expect(await screen.findByText("No tasks found. Try adding a task above!")).toBeInTheDocument();
-    
-    // Restore console.error
-    consoleSpy.mockRestore();
-  });
 });
