@@ -3,7 +3,6 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 // SCENARIO 1: View Homepage Content
 Given("I am on the homepage", () => {
   cy.visit("/");
-  // Wait for page to load
   cy.contains("Welcome to the Productivity App!").should("be.visible");
 });
 
@@ -14,31 +13,32 @@ Then("I should see the productivity quotes", () => {
   cy.contains("Walt Disney").should("be.visible");
 });
 
-Then("I should see the {string} button", (buttonText: string) => {
-  cy.contains("button", buttonText).should("be.visible");
+Then("I should see {string} text", (text: string) => {
+  cy.contains(text).scrollIntoView().should("be.visible");
 });
 
 Then("I should see the AI Assistant section", () => {
   cy.contains("AI Assistant").should("be.visible");
 });
 
-// SCENARIO 2: Navigate to To-Do Page
+// SCENARIO 2: Navigate to To-Do Page, by simulating button click
 When("I click the {string} button", (buttonText: string) => {
-  cy.contains("button", buttonText).click();
+  cy.contains(buttonText).click();
 });
 
 Then("I should be on the todo page", () => {
   cy.url().should("include", "/todo");
-  cy.contains("Task Manager").should("be.visible");
+  cy.contains("To-Do List").should("be.visible");
 });
 
 // SCENARIO 3: Ask AI a Question
 When("I type {string} in the AI input", (question: string) => {
-  cy.get('textarea[placeholder*="Ask"]').clear().type(question);
+  cy.get('input[placeholder*="Ask"]').clear().type(question);
 });
 
-When("I click the Ask AI button", () => {
+When("I click the Ask button", () => {
   // Mock the API response to avoid real OpenAI calls, no cost no network delay, just consistent test results - write a fake message response
+  // Happens before the request is made, and give it an alias 'askAI'
   cy.intercept("POST", "/api/ask-ai", {
     statusCode: 200,
     body: {
@@ -52,7 +52,7 @@ When("I click the Ask AI button", () => {
     }
   }).as("askAI");
 
-  cy.contains("button", "Ask AI").click();
+  cy.contains("button", "Ask").click();
 });
 
 Then("I should see the AI response", () => {

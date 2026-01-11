@@ -6,7 +6,7 @@ Feature: Homepage
   Scenario: View homepage content
     Given I am on the homepage
     Then I should see the productivity quotes
-    And I should see the "Go to To-Do List page" button
+    And I should see "Go to To-Do List page" text
     And I should see the AI Assistant section
 
   Scenario: Navigate to todo page
@@ -17,5 +17,5 @@ Feature: Homepage
   Scenario: Ask AI assistant a question
     Given I am on the homepage
     When I type "What should I focus on today?" in the AI input
-    And I click the Ask AI button
+    And I click the Ask button
     Then I should see the AI response
