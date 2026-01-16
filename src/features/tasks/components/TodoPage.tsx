@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTasks } from "../../../app/TasksContext";
 import { supabase } from "../../../../supabaseClient";
 
@@ -10,11 +10,6 @@ export default function TodoPage() {
   const [input, setInput] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [dueDate, setDueDate] = useState("");
-
-  useEffect(() => {
-    console.log("TodoPage mounted");
-    console.log("Tasks array:", tasks);
-  }, [tasks]);
 
   // use await because addTask is an async function, it talks to Supabase
   async function handleSubmit(e: React.FormEvent) {
@@ -64,8 +59,6 @@ export default function TodoPage() {
       tasks.map((t, i) => (i === idx ? { ...t, done: updatedDone, completed_at: completedAt } : t))
     );
   }
-
-  console.log('tasks array: ', tasks);
 
   return (
     <>

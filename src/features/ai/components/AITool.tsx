@@ -60,14 +60,11 @@ export default function AITool() {
     setPrompt("");
 
     try {
-      console.log("Sending request to API...");
       const res = await fetch("/api/ask-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: finalPrompt }),
       });
-
-      console.log("Response received:", res.status);
 
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
@@ -112,7 +109,6 @@ export default function AITool() {
       setLoading(false);
     }
   }
-  console.log("conversation array: ", conversation);
 
   return (
     <div className="p-4 bg-white dark:bg-blue-950 rounded shadow flex flex-col h-full">

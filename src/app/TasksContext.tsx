@@ -59,7 +59,6 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     if (error) {
       console.error("Supabase insert error:", error);
     }
-    console.log("Supabase insert data:", data);
     if (data) setTasks((prev) => [...prev, ...data]);
   }
 
