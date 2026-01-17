@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTasks } from "./TasksContext";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
@@ -34,13 +34,15 @@ export default function TodoPage() {
   }
 
   // Sort tasks by priority (High > Medium > Low), then by due date
-  const sortedTasks = [...tasks].sort((a, b) => {
-    const aPriority = PRIORITY_ORDER[a.priority as keyof typeof PRIORITY_ORDER] ?? 1;
-    const bPriority = PRIORITY_ORDER[b.priority as keyof typeof PRIORITY_ORDER] ?? 1;
-    if (aPriority !== bPriority) return aPriority - bPriority;
-    if (a.due_date && b.due_date) return a.due_date.localeCompare(b.due_date);
-    return a.due_date ? -1 : 1;
-  });
+  const sortedTasks = useMemo(() => {
+    return [...tasks].sort((a, b) => {
+      const aPriority = PRIORITY_ORDER[a.priority as keyof typeof PRIORITY_ORDER] ?? 1;
+      const bPriority = PRIORITY_ORDER[b.priority as keyof typeof PRIORITY_ORDER] ?? 1;
+      if (aPriority !== bPriority) return aPriority - bPriority;
+      if (a.due_date && b.due_date) return a.due_date.localeCompare(b.due_date);
+      return a.due_date ? -1 : 1;
+    });
+  }, [tasks]);
 
   return (
     <>
