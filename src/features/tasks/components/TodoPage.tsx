@@ -7,6 +7,7 @@ import { supabase } from "../../../../supabaseClient";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { PRIORITY_LEVELS, PRIORITY_ORDER, BUTTON_TEXT } from "../constants";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function TodoPage() {
   const { tasks, setTasks, addTask, loading } = useTasks();
@@ -17,11 +18,19 @@ export default function TodoPage() {
   // use await because addTask is an async function, it talks to Supabase
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (input.trim()) {
+    if (!input.trim()) {
+      return;
+    }
+    
+    try {
       await addTask(input.trim(), priority, dueDate || null);
       setInput("");
       setDueDate("");
       setPriority(PRIORITY_LEVELS.MEDIUM);
+      toast.success("Task added successfully!");
+    } catch (err) {
+      console.error("Failed to add task:", err);
+      toast.error("Failed to add task. Please try again.");
     }
   }
 
@@ -62,6 +71,7 @@ export default function TodoPage() {
 
   return (
     <>
+      <Toaster position="top-right" />
       <header className="bg-white p-4 text-blue-900 text-center shadow-md dark:bg-blue-900 dark:text-white">
         <h1 className="text-3xl font-bold">To-Do List</h1>
       </header>
