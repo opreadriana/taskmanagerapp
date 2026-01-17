@@ -1,7 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import TodoPage from "./TodoPage";
-import { TasksProvider } from "../../../app/TasksContext";
+import { TasksProvider } from "./TasksContext";
 
 // Mock database to return error
 jest.mock("../../../../supabaseClient", () => ({

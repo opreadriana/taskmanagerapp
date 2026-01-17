@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { useState } from "react";
-import { useTasks } from "../../../app/TasksContext";
+import { useTasks } from "./TasksContext";
 import { supabase } from "../../../../supabaseClient";
 
 export default function TodoPage() {
