@@ -20,6 +20,7 @@ type TasksContextType = {
     priority: string,
     due_date: string | null
   ) => Promise<void>;
+  toggleTask: (taskId: string) => Promise<void>;
 };
 
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
@@ -62,8 +63,37 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
     if (data) setTasks((prev) => [...prev, ...data]);
   }
 
+  // Toggle task done status and update completed_at timestamp
+  async function toggleTask(taskId: string) {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) {
+      console.error("Task not found:", taskId);
+      return;
+    }
+    
+    const updatedDone = !task.done;
+    const completedAt = updatedDone ? new Date().toISOString() : null;
+    
+    const { error } = await supabase
+      .from("tasks")
+      .update({ 
+        done: updatedDone,
+        completed_at: completedAt
+      })
+      .eq("id", taskId);
+      
+    if (error) {
+      console.error("Supabase update error:", error);
+      throw error;
+    }
+    
+    setTasks((tasks) =>
+      tasks.map((t) => (t.id === taskId ? { ...t, done: updatedDone, completed_at: completedAt } : t))
+    );
+  }
+
   return (
-    <TasksContext.Provider value={{ tasks, setTasks, loading, addTask }}>
+    <TasksContext.Provider value={{ tasks, setTasks, loading, addTask, toggleTask }}>
       {children}
     </TasksContext.Provider>
   );

@@ -3,14 +3,13 @@ import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTasks } from "./TasksContext";
-import { supabase } from "../../../../supabaseClient";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { PRIORITY_LEVELS, PRIORITY_ORDER, BUTTON_TEXT } from "../constants";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function TodoPage() {
-  const { tasks, setTasks, addTask, loading } = useTasks();
+  const { tasks, addTask, loading, toggleTask } = useTasks();
   const [input, setInput] = useState("");
   const [priority, setPriority] = useState<string>(PRIORITY_LEVELS.MEDIUM);
   const [dueDate, setDueDate] = useState("");
@@ -43,32 +42,6 @@ export default function TodoPage() {
     return a.due_date ? -1 : 1;
   });
 
-  //update the 'done' property and completed_at timestamp (which gets current timestamp) in DB and state
-  async function toggleTaskById(taskId: string) {
-    const task = tasks.find((t) => t.id === taskId);
-    if (!task || !task.id) {
-      console.error("Task or task.id is undefined!", task);
-      return;
-    }
-    const updatedDone = !task.done;
-    const completedAt = updatedDone ? new Date().toISOString() : null;
-    
-    const { error } = await supabase
-      .from("tasks")
-      .update({ 
-        done: updatedDone,
-        completed_at: completedAt
-      })
-      .eq("id", task.id);
-      
-    if (error) {
-      console.error("Supabase update error:", error);
-    }
-    setTasks((tasks) =>
-      tasks.map((t) => (t.id === taskId ? { ...t, done: updatedDone, completed_at: completedAt } : t))
-    );
-  }
-
   return (
     <>
       <Toaster position="top-right" />
@@ -93,7 +66,7 @@ export default function TodoPage() {
           <TaskList
             tasks={sortedTasks}
             loading={loading}
-            onToggleTask={toggleTaskById}
+            onToggleTask={toggleTask}
           />
 
           <Link href="/">
