@@ -22,12 +22,17 @@ export default function Home() {
 
             <div className="mb-8 space-y-4 italic text-gray-700 dark:text-gray-300">
               <p className="border-l-4 border-blue-400 pl-4 py-2">
-                "You may delay, but time will not." 
-                <span className="block text-sm font-semibold mt-1 not-italic">— Benjamin Franklin</span>
+                &ldquo;You may delay, but time will not.&rdquo;
+                <span className="block text-sm font-semibold mt-1 not-italic">
+                  — Benjamin Franklin
+                </span>
               </p>
               <p className="border-l-4 border-blue-400 pl-4 py-2">
-                "The way to get started is to quit talking and begin doing." 
-                <span className="block text-sm font-semibold mt-1 not-italic">— Walt Disney</span>
+                &ldquo;The way to get started is to quit talking and begin
+                doing.&rdquo;
+                <span className="block text-sm font-semibold mt-1 not-italic">
+                  — Walt Disney
+                </span>
               </p>
             </div>
 
@@ -72,4 +77,3 @@ export default function Home() {
     </div>
   );
 }
-
