@@ -11,4 +11,10 @@ module.exports = {
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
   },
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/**/*.test.{js,jsx,ts,tsx}",
+    "!src/**/*.stories.{js,jsx,ts,tsx}",
+  ],
 };

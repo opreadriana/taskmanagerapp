@@ -1,7 +1,8 @@
+import React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import ThemeToggle from "../features/theme/components/ThemeToggle";
-import { TasksProvider } from "../features/tasks/context/TasksContext";
+import { TasksProvider } from "../features/tasks/components/TasksContext";
 
 export const metadata: Metadata = {
   title: "Productivity App",

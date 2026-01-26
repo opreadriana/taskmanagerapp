@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import AITool from "../features/ai/components/AITool";
@@ -15,12 +16,27 @@ export default function Home() {
         {/* Left side - Main content */}
         <div className="flex-1 flex flex-col items-center overflow-y-auto">
           <div className="w-full max-w-2xl">
-            <h2 className="text-2xl font-semibold mb-4">
-              {" "}
+            <h2 className="text-2xl font-semibold mb-6">
               Welcome to the Productivity App!
             </h2>
 
-            <div className="mb-6 flex justify-start">
+            <div className="mb-8 space-y-4 italic text-gray-700 dark:text-gray-300">
+              <p className="border-l-4 border-blue-400 pl-4 py-2">
+                &ldquo;You may delay, but time will not.&rdquo;
+                <span className="block text-sm font-semibold mt-1 not-italic">
+                  — Benjamin Franklin
+                </span>
+              </p>
+              <p className="border-l-4 border-blue-400 pl-4 py-2">
+                &ldquo;The way to get started is to quit talking and begin
+                doing.&rdquo;
+                <span className="block text-sm font-semibold mt-1 not-italic">
+                  — Walt Disney
+                </span>
+              </p>
+            </div>
+
+            <div className="mb-10 flex justify-start">
               <Image
                 src="/notebook-writing.jpg"
                 alt="Person writing in notebook"
@@ -61,4 +77,3 @@ export default function Home() {
     </div>
   );
 }
-
