@@ -20,7 +20,7 @@ export default function TodoPage() {
     if (!input.trim()) {
       return;
     }
-    
+
     try {
       await addTask(input.trim(), priority, dueDate || null);
       setInput("");
@@ -36,8 +36,10 @@ export default function TodoPage() {
   // Sort tasks by priority (High > Medium > Low), then by due date
   const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => {
-      const aPriority = PRIORITY_ORDER[a.priority as keyof typeof PRIORITY_ORDER] ?? 1;
-      const bPriority = PRIORITY_ORDER[b.priority as keyof typeof PRIORITY_ORDER] ?? 1;
+      const aPriority =
+        PRIORITY_ORDER[a.priority as keyof typeof PRIORITY_ORDER] ?? 1;
+      const bPriority =
+        PRIORITY_ORDER[b.priority as keyof typeof PRIORITY_ORDER] ?? 1;
       if (aPriority !== bPriority) return aPriority - bPriority;
       if (a.due_date && b.due_date) return a.due_date.localeCompare(b.due_date);
       return a.due_date ? -1 : 1;
@@ -54,7 +56,7 @@ export default function TodoPage() {
       <main className="flex-1 bg-gray-100 text-gray-900 p-8 min-h-[60vh] dark:bg-gray-900 dark:text-gray-200 flex flex-col items-center">
         <div className="w-full max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">Your To-Do List</h2>
-          
+
           <TaskForm
             input={input}
             setInput={setInput}
@@ -68,6 +70,7 @@ export default function TodoPage() {
           <TaskList
             tasks={sortedTasks}
             loading={loading}
+            error={error}
             onToggleTask={toggleTask}
           />
 

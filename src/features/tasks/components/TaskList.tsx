@@ -14,15 +14,29 @@ interface Task {
 interface TaskListProps {
   tasks: Task[];
   loading: boolean;
+  error?: string | null;
   onToggleTask: (taskId: string) => void;
 }
 
-export default function TaskList({ tasks, loading, onToggleTask }: TaskListProps) {
+export default function TaskList({
+  tasks,
+  loading,
+  error,
+  onToggleTask,
+}: TaskListProps) {
   if (loading) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400">
         <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-900 dark:border-blue-300"></div>
         <p className="mt-2">{MESSAGES.LOADING}</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded dark:bg-red-900 dark:border-red-700 dark:text-red-200">
+        {error}
       </div>
     );
   }
