@@ -1,6 +1,10 @@
 import React from "react";
 import { PRIORITY_LEVELS, BUTTON_TEXT, MESSAGES } from "../constants";
 
+const { HIGH, MEDIUM, LOW } = PRIORITY_LEVELS;
+const { ADD } = BUTTON_TEXT;
+const { PLACEHOLDER } = MESSAGES;
+
 interface TaskFormProps {
   input: string;
   setInput: (value: string) => void;
@@ -26,16 +30,16 @@ export default function TaskForm({
         className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder={MESSAGES.PLACEHOLDER}
+        placeholder={PLACEHOLDER}
       />
       <select
         value={priority}
         onChange={(e) => setPriority(e.target.value)}
         className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
       >
-        <option>{PRIORITY_LEVELS.HIGH}</option>
-        <option>{PRIORITY_LEVELS.MEDIUM}</option>
-        <option>{PRIORITY_LEVELS.LOW}</option>
+        <option>{HIGH}</option>
+        <option>{MEDIUM}</option>
+        <option>{LOW}</option>
       </select>
       <input
         type="date"
@@ -47,7 +51,7 @@ export default function TaskForm({
         type="submit"
         className="text-blue-900 bg-blue-200 px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
       >
-        {BUTTON_TEXT.ADD}
+        {ADD}
       </button>
     </form>
   );
