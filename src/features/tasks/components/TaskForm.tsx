@@ -36,6 +36,7 @@ export default function TaskForm({
         value={priority}
         onChange={(e) => setPriority(e.target.value)}
         className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
+        aria-label="Priority"
       >
         <option>{HIGH}</option>
         <option>{MEDIUM}</option>
@@ -46,6 +47,7 @@ export default function TaskForm({
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
         className="px-2 py-1 rounded border border-blue-200 dark:bg-blue-950 dark:text-white"
+        aria-label="Due date"
       />
       <button
         type="submit"
