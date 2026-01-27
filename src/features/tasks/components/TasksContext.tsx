@@ -1,6 +1,5 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { supabase } from "../../../../supabaseClient";
 
 export type Task = {
   id: string;
@@ -21,6 +20,7 @@ type TasksContextType = {
     due_date: string | null
   ) => Promise<void>;
   toggleTask: (taskId: string) => Promise<void>;
+  deleteTask: (taskId: string) => Promise<void>;
 };
 
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
@@ -30,70 +30,116 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch tasks from Supabase on mount, and avoid fetching auto-generated columns
+  // Fetch tasks from API on mount
   useEffect(() => {
     async function fetchTasks() {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("tasks")
-        .select("id, text, done, priority, due_date, completed_at");
-      if (data) {
-        setTasks(data);
-      } else {
-        console.log("Error fetching tasks: ", error);
+      try {
+        const response = await fetch("/api/tasks");
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("API Error:", response.status, errorData);
+          throw new Error(
+            `Failed to fetch tasks: ${errorData.error || response.statusText}`
+          );
+        }
+        const data = await response.json();
+        setTasks(data.tasks || []);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     fetchTasks();
   }, []);
 
-  // Add a task to Supabase with the given text, priority, and due_date, then update Context
+  // Add a task via API with the given text, priority, and due_date, then update Context
   async function addTask(
     text: string,
     priority: string,
     due_date: string | null
   ) {
-    const { data, error } = await supabase
-      .from("tasks")
-      .insert([{ text, done: false, priority: priority || "Medium", due_date, completed_at: null }])
-      .select();
-    if (error) {
-      console.error("Supabase insert error:", error);
+    try {
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          priority: priority || "Medium",
+          due_date,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create task");
+      }
+
+      const data = await response.json();
+      if (data.task) {
+        setTasks((prev) => [data.task, ...prev]);
+      }
+    } catch (error) {
+      console.error("Error creating task:", error);
+      throw error;
     }
-    if (data) setTasks((prev) => [...prev, ...data]);
   }
 
-  // Toggle task done status and update completed_at timestamp
+  // Toggle task done status via API
   async function toggleTask(taskId: string) {
     const task = tasks.find((t) => t.id === taskId);
     if (!task) {
       console.error("Task not found:", taskId);
       return;
     }
-    
+
     const updatedDone = !task.done;
-    const completedAt = updatedDone ? new Date().toISOString() : null;
-    
-    const { error } = await supabase
-      .from("tasks")
-      .update({ 
-        done: updatedDone,
-        completed_at: completedAt
-      })
-      .eq("id", taskId);
-      
-    if (error) {
-      console.error("Supabase update error:", error);
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ done: updatedDone }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task");
+      }
+
+      const data = await response.json();
+      if (data.task) {
+        setTasks((tasks) =>
+          tasks.map((t) => (t.id === taskId ? data.task : t))
+        );
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
       throw error;
     }
-    
-    setTasks((tasks) =>
-      tasks.map((t) => (t.id === taskId ? { ...t, done: updatedDone, completed_at: completedAt } : t))
-    );
+  }
+
+  // Delete a task via API
+  async function deleteTask(taskId: string) {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete task");
+      }
+
+      setTasks((tasks) => tasks.filter((t) => t.id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      throw error;
+    }
   }
 
   return (
-    <TasksContext.Provider value={{ tasks, setTasks, loading, addTask, toggleTask }}>
+    <TasksContext.Provider
+      value={{ tasks, setTasks, loading, addTask, toggleTask, deleteTask }}
+    >
       {children}
     </TasksContext.Provider>
   );

@@ -36,7 +36,7 @@ describe("TaskForm", () => {
     expect(prioritySelect).toBeInTheDocument();
 
     // Check date input exists
-    const dateInput = screen.getByDisplayValue("");
+    const dateInput = screen.getByLabelText(/due date/i);
     expect(dateInput).toHaveAttribute("type", "date");
 
     // Check submit button exists
@@ -77,7 +77,7 @@ describe("TaskForm", () => {
   it("calls setDueDate when due date value changes", () => {
     render(<TaskForm {...defaultProps} />);
 
-    const dateInput = screen.getByDisplayValue("");
+    const dateInput = screen.getByLabelText(/due date/i);
     fireEvent.change(dateInput, { target: { value: "2026-12-31" } });
 
     expect(mockSetDueDate).toHaveBeenCalledTimes(1);
@@ -106,8 +106,10 @@ describe("TaskForm", () => {
   it("calls onSubmit when submit button is clicked", () => {
     render(<TaskForm {...defaultProps} input="Test task" />);
 
-    const submitButton = screen.getByRole("button", { name: BUTTON_TEXT.ADD });
-    fireEvent.click(submitButton);
+    const form = screen
+      .getByRole("button", { name: BUTTON_TEXT.ADD })
+      .closest("form");
+    fireEvent.submit(form!);
 
     expect(mockOnSubmit).toHaveBeenCalledTimes(1);
   });
