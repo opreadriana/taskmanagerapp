@@ -4,29 +4,42 @@ import "@testing-library/jest-dom";
 import TodoPage from "./TodoPage";
 import { TasksProvider } from "./TasksContext";
 
-// Mock database interactions 
-jest.mock("../../../../supabaseClient", () => ({
-  supabase: {
-    from: () => ({
-      select: () => ({
-        data: [
-          {
-            id: 1,
-            text: "Test Task",
-            done: false,
-            priority: "High",
-            due_date: "2026-01-10",
-            completed_at: null,
-          },
-          { id: 2, text: "Another Task", done: true, priority: "Low", due_date: null, completed_at: null },
-        ],
-        error: null,
-      }),
-      insert: () => ({ select: () => ({ data: [], error: null }) }),
-      update: () => ({ eq: () => ({ error: null }) }),
-    }),
-  },
-}));
+// Mock fetch API
+global.fetch = jest.fn();
+
+beforeEach(() => {
+  (global.fetch as jest.Mock).mockClear();
+  // Default mock for GET /api/tasks
+  (global.fetch as jest.Mock).mockImplementation((url) => {
+    if (url === "/api/tasks") {
+      return Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            tasks: [
+              {
+                id: "1",
+                text: "Test Task",
+                done: false,
+                priority: "High",
+                due_date: "2026-01-10",
+                completed_at: null,
+              },
+              {
+                id: "2",
+                text: "Another Task",
+                done: true,
+                priority: "Low",
+                due_date: null,
+                completed_at: null,
+              },
+            ],
+          }),
+      });
+    }
+    return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+  });
+});
 
 // happy path renders TodoPage and verifies data fetching and rendering
 describe("TodoPage", () => {
