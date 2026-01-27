@@ -7,9 +7,12 @@ import { TaskService } from "@/features/tasks/services/taskService";
  */
 export async function GET() {
   try {
+    console.log("GET /api/tasks - Starting request");
     const { data, error } = await TaskService.getTasks();
+    console.log("TaskService.getTasks result:", { data, error });
 
     if (error) {
+      console.error("TaskService returned error:", error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 

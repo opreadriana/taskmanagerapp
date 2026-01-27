@@ -37,7 +37,11 @@ export function TasksProvider({ children }: { children: React.ReactNode }) {
       try {
         const response = await fetch("/api/tasks");
         if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
+          const errorData = await response.json();
+          console.error("API Error:", response.status, errorData);
+          throw new Error(
+            `Failed to fetch tasks: ${errorData.error || response.statusText}`
+          );
         }
         const data = await response.json();
         setTasks(data.tasks || []);
