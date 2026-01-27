@@ -13,9 +13,10 @@ interface Task {
 interface TaskItemProps {
   task: Task;
   onToggle: () => void;
+  onDelete: () => void;
 }
 
-export default function TaskItem({ task, onToggle }: TaskItemProps) {
+export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
   const getPriorityStyle = (priority: string) => {
     switch (priority) {
       case PRIORITY_LEVELS.HIGH:
@@ -43,7 +44,9 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
         </span>
       </div>
       <div className="flex items-center gap-2 ml-4">
-        <span className={`text-xs px-2 py-1 rounded ${getPriorityStyle(task.priority)}`}>
+        <span
+          className={`text-xs px-2 py-1 rounded ${getPriorityStyle(task.priority)}`}
+        >
           {task.priority}
         </span>
         Due Date:{" "}
@@ -58,6 +61,13 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
             {new Date(task.completed_at).toLocaleString()}
           </span>
         )}
+        <button
+          onClick={onDelete}
+          className="ml-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm"
+          aria-label="Delete task"
+        >
+          Delete
+        </button>
       </div>
     </li>
   );

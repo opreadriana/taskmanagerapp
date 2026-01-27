@@ -15,14 +15,20 @@ interface MockTask {
 interface MockTaskItemProps {
   task: MockTask;
   onToggle: () => void;
+  onDelete: () => void;
 }
 
 // Mock TaskItem component
 jest.mock("./TaskItem", () => {
-  return function MockTaskItem({ task, onToggle }: MockTaskItemProps) {
+  return function MockTaskItem({
+    task,
+    onToggle,
+    onDelete,
+  }: MockTaskItemProps) {
     return (
-      <li data-testid={`task-item-${task.id}`} onClick={onToggle}>
-        {task.text}
+      <li data-testid={`task-item-${task.id}`}>
+        <span onClick={onToggle}>{task.text}</span>
+        <button onClick={onDelete}>Delete</button>
       </li>
     );
   };
@@ -30,6 +36,7 @@ jest.mock("./TaskItem", () => {
 
 describe("TaskList", () => {
   const mockOnToggleTask = jest.fn();
+  const mockOnDeleteTask = jest.fn();
 
   const mockTasks = [
     {
@@ -56,7 +63,12 @@ describe("TaskList", () => {
 
   it("renders loading state when loading is true", () => {
     render(
-      <TaskList tasks={[]} loading={true} onToggleTask={mockOnToggleTask} />
+      <TaskList
+        tasks={[]}
+        loading={true}
+        onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
+      />
     );
 
     expect(screen.getByText(MESSAGES.LOADING)).toBeInTheDocument();
@@ -73,6 +85,7 @@ describe("TaskList", () => {
         loading={false}
         error={errorMessage}
         onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
       />
     );
 
@@ -81,7 +94,12 @@ describe("TaskList", () => {
 
   it("renders no tasks message when tasks array is empty", () => {
     render(
-      <TaskList tasks={[]} loading={false} onToggleTask={mockOnToggleTask} />
+      <TaskList
+        tasks={[]}
+        loading={false}
+        onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
+      />
     );
 
     expect(screen.getByText(MESSAGES.NO_TASKS)).toBeInTheDocument();
@@ -93,6 +111,7 @@ describe("TaskList", () => {
         tasks={mockTasks}
         loading={false}
         onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
       />
     );
 
@@ -108,10 +127,11 @@ describe("TaskList", () => {
         tasks={mockTasks}
         loading={false}
         onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
       />
     );
 
-    const taskItem = screen.getByTestId("task-item-1");
+    const taskItem = screen.getByText("Task 1");
     taskItem.click();
 
     expect(mockOnToggleTask).toHaveBeenCalledTimes(1);
@@ -124,6 +144,7 @@ describe("TaskList", () => {
         tasks={mockTasks}
         loading={false}
         onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
       />
     );
 
@@ -139,6 +160,7 @@ describe("TaskList", () => {
         loading={true}
         error={errorMessage}
         onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
       />
     );
 
@@ -149,7 +171,12 @@ describe("TaskList", () => {
 
   it("prioritizes loading over empty tasks message", () => {
     render(
-      <TaskList tasks={[]} loading={true} onToggleTask={mockOnToggleTask} />
+      <TaskList
+        tasks={[]}
+        loading={true}
+        onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
+      />
     );
 
     expect(screen.getByText(MESSAGES.LOADING)).toBeInTheDocument();
@@ -162,6 +189,7 @@ describe("TaskList", () => {
         tasks={mockTasks}
         loading={false}
         onToggleTask={mockOnToggleTask}
+        onDeleteTask={mockOnDeleteTask}
       />
     );
 

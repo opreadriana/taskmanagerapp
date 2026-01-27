@@ -16,6 +16,7 @@ interface TaskListProps {
   loading: boolean;
   error?: string | null;
   onToggleTask: (taskId: string) => void;
+  onDeleteTask: (taskId: string) => void;
 }
 
 export default function TaskList({
@@ -23,6 +24,7 @@ export default function TaskList({
   loading,
   error,
   onToggleTask,
+  onDeleteTask,
 }: TaskListProps) {
   if (loading) {
     return (
@@ -56,6 +58,7 @@ export default function TaskList({
           key={task.id}
           task={task}
           onToggle={() => onToggleTask(task.id)}
+          onDelete={() => onDeleteTask(task.id)}
         />
       ))}
     </ul>

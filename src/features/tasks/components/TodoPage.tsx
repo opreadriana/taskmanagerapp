@@ -9,12 +9,12 @@ import { PRIORITY_LEVELS, PRIORITY_ORDER, BUTTON_TEXT } from "../constants";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function TodoPage() {
-  const { tasks, addTask, loading, toggleTask } = useTasks();
+  const { tasks, addTask, loading, toggleTask, deleteTask } = useTasks();
   const [input, setInput] = useState("");
   const [priority, setPriority] = useState<string>(PRIORITY_LEVELS.MEDIUM);
   const [dueDate, setDueDate] = useState("");
 
-  // use await because addTask is an async function, it talks to Supabase
+  // use await because addTask is an async function, it talks to the API
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim()) {
@@ -46,6 +46,19 @@ export default function TodoPage() {
     });
   }, [tasks]);
 
+  // Handle task deletion with confirmation
+  async function handleDeleteTask(taskId: string) {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+      try {
+        await deleteTask(taskId);
+        toast.success("Task deleted successfully!");
+      } catch (err) {
+        console.error("Failed to delete task:", err);
+        toast.error("Failed to delete task. Please try again.");
+      }
+    }
+  }
+
   return (
     <>
       <Toaster position="top-right" />
@@ -70,8 +83,8 @@ export default function TodoPage() {
           <TaskList
             tasks={sortedTasks}
             loading={loading}
-            error={error}
             onToggleTask={toggleTask}
+            onDeleteTask={handleDeleteTask}
           />
 
           <Link href="/">
