@@ -17,12 +17,14 @@ export class TaskService {
     try {
       const { data, error } = await supabase
         .from("tasks")
-        .select("id, text, done, priority, due_date, completed_at")
-        .order("created_at", { ascending: false });
+        .select("id, text, done, priority, due_date, completed_at");
 
       if (error) {
         console.error("Error fetching tasks:", error);
-        return { data: null, error: new Error(error.message) };
+        return {
+          data: null,
+          error: new Error(error.message || JSON.stringify(error)),
+        };
       }
 
       return { data, error: null };
@@ -62,7 +64,10 @@ export class TaskService {
 
       if (error) {
         console.error("Error creating task:", error);
-        return { data: null, error: new Error(error.message) };
+        return {
+          data: null,
+          error: new Error(error.message || JSON.stringify(error)),
+        };
       }
 
       return { data, error: null };
@@ -94,7 +99,10 @@ export class TaskService {
 
       if (error) {
         console.error("Error updating task:", error);
-        return { data: null, error: new Error(error.message) };
+        return {
+          data: null,
+          error: new Error(error.message || JSON.stringify(error)),
+        };
       }
 
       return { data, error: null };
@@ -113,7 +121,7 @@ export class TaskService {
 
       if (error) {
         console.error("Error deleting task:", error);
-        return { error: new Error(error.message) };
+        return { error: new Error(error.message || JSON.stringify(error)) };
       }
 
       return { error: null };
