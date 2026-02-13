@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { PRIORITY_LEVELS } from "../constants";
 
 interface Task {
@@ -12,11 +12,20 @@ interface Task {
 
 interface TaskItemProps {
   task: Task;
-  onToggle: () => void;
-  onDelete: () => void;
+  onToggleTask: (taskId: string) => void;
+  onDeleteTask: (taskId: string) => void;
 }
 
-export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
+function TaskItem({ task, onToggleTask, onDeleteTask }: TaskItemProps) {
+  // Create stable handlers for this specific task
+  const handleToggle = useCallback(() => {
+    onToggleTask(task.id);
+  }, [onToggleTask, task.id]);
+
+  const handleDelete = useCallback(() => {
+    onDeleteTask(task.id);
+  }, [onDeleteTask, task.id]);
+
   const getPriorityStyle = (priority: string) => {
     switch (priority) {
       case PRIORITY_LEVELS.HIGH:
@@ -36,7 +45,7 @@ export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
         <input
           type="checkbox"
           checked={task.done}
-          onChange={onToggle}
+          onChange={handleToggle}
           className="mr-2"
         />
         <span className={task.done ? "line-through opacity-60" : ""}>
@@ -62,7 +71,7 @@ export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
           </span>
         )}
         <button
-          onClick={onDelete}
+          onClick={handleDelete}
           className="ml-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm"
           aria-label="Delete task"
         >
@@ -72,3 +81,5 @@ export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
     </li>
   );
 }
+
+export default React.memo(TaskItem);

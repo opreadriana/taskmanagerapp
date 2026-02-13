@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useTasks } from "./TasksContext";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
@@ -46,18 +46,29 @@ export default function TodoPage() {
     });
   }, [tasks]);
 
+  // Memoized callbacks to prevent unnecessary re-renders
+  const handleToggleTask = useCallback(
+    (taskId: string) => {
+      toggleTask(taskId);
+    },
+    [toggleTask]
+  );
+
   // Handle task deletion with confirmation
-  async function handleDeleteTask(taskId: string) {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      try {
-        await deleteTask(taskId);
-        toast.success("Task deleted successfully!");
-      } catch (err) {
-        console.error("Failed to delete task:", err);
-        toast.error("Failed to delete task. Please try again.");
+  const handleDeleteTask = useCallback(
+    async (taskId: string) => {
+      if (window.confirm("Are you sure you want to delete this task?")) {
+        try {
+          await deleteTask(taskId);
+          toast.success("Task deleted successfully!");
+        } catch (err) {
+          console.error("Failed to delete task:", err);
+          toast.error("Failed to delete task. Please try again.");
+        }
       }
-    }
-  }
+    },
+    [deleteTask]
+  );
 
   return (
     <>
@@ -83,7 +94,7 @@ export default function TodoPage() {
           <TaskList
             tasks={sortedTasks}
             loading={loading}
-            onToggleTask={toggleTask}
+            onToggleTask={handleToggleTask}
             onDeleteTask={handleDeleteTask}
           />
 
