@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { PRIORITY_LEVELS } from "../constants";
 
 interface Task {
@@ -12,10 +12,20 @@ interface Task {
 
 interface TaskItemProps {
   task: Task;
-  onToggle: () => void;
+  onToggleTask: (taskId: string) => void;
+  onDeleteTask: (taskId: string) => void;
 }
 
-export default function TaskItem({ task, onToggle }: TaskItemProps) {
+function TaskItem({ task, onToggleTask, onDeleteTask }: TaskItemProps) {
+  // Create stable handlers for this specific task
+  const handleToggle = useCallback(() => {
+    onToggleTask(task.id);
+  }, [onToggleTask, task.id]);
+
+  const handleDelete = useCallback(() => {
+    onDeleteTask(task.id);
+  }, [onDeleteTask, task.id]);
+
   const getPriorityStyle = (priority: string) => {
     switch (priority) {
       case PRIORITY_LEVELS.HIGH:
@@ -35,7 +45,7 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
         <input
           type="checkbox"
           checked={task.done}
-          onChange={onToggle}
+          onChange={handleToggle}
           className="mr-2"
         />
         <span className={task.done ? "line-through opacity-60" : ""}>
@@ -43,7 +53,9 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
         </span>
       </div>
       <div className="flex items-center gap-2 ml-4">
-        <span className={`text-xs px-2 py-1 rounded ${getPriorityStyle(task.priority)}`}>
+        <span
+          className={`text-xs px-2 py-1 rounded ${getPriorityStyle(task.priority)}`}
+        >
           {task.priority}
         </span>
         Due Date:{" "}
@@ -58,7 +70,16 @@ export default function TaskItem({ task, onToggle }: TaskItemProps) {
             {new Date(task.completed_at).toLocaleString()}
           </span>
         )}
+        <button
+          onClick={handleDelete}
+          className="ml-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm"
+          aria-label="Delete task"
+        >
+          Delete
+        </button>
       </div>
     </li>
   );
 }
+
+export default React.memo(TaskItem);

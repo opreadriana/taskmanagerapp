@@ -16,13 +16,15 @@ interface TaskListProps {
   loading: boolean;
   error?: string | null;
   onToggleTask: (taskId: string) => void;
+  onDeleteTask: (taskId: string) => void;
 }
 
-export default function TaskList({
+function TaskList({
   tasks,
   loading,
   error,
   onToggleTask,
+  onDeleteTask,
 }: TaskListProps) {
   if (loading) {
     return (
@@ -55,9 +57,12 @@ export default function TaskList({
         <TaskItem
           key={task.id}
           task={task}
-          onToggle={() => onToggleTask(task.id)}
+          onToggleTask={onToggleTask}
+          onDeleteTask={onDeleteTask}
         />
       ))}
     </ul>
   );
 }
+
+export default React.memo(TaskList);
